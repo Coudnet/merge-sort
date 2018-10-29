@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sort By Concat</title>
+    <style>
+        .input {
+            width: 500px;
+            height: 30px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .sort {
+            margin-left: 20px;
+            height: 30px;
+        }
+        .result-block {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<input type="text" class="input" placeholder="Введите числа для сортировки через запятую">
+<button class="sort">Отсортировать</button>
+<div class="result-block">
+    Результат: [<span class="result"></span>]
+</div>
+<script>
+    document.querySelector(".sort").addEventListener("click", () => {
+       let input = document.querySelector(".input").value.split(",");
+       input = input.map((num) => { return +num; }).filter(Boolean);
+
+       document.querySelector(".result").innerHTML = divide(input);
+    });
+
+    function sort(A, B) {
+        let indA = 0;
+        let indB = 0;
+        let result = [];
+
+        while (indA < A.length || indB < B.length) {
+            if ((A[indA] >= B[indB]) || indA === A.length) {
+                result.push(B[indB]);
+                indB++;
+            } else {
+                result.push(A[indA]);
+                indA++;
+            }
+        }
+        return result;
+    }
+
+    function compareNumeric(a, b) {
+        if (a > b) return 1;
+        if (a < b) return -1;
+    }
+
+    function divide(array) {
+        if(array.length > 2) {
+            const middleIndex = Math.floor(array.length / 2);
+            let leftArray = divide(array.slice(0, middleIndex));
+            let rightArray = divide(array.slice(middleIndex));
+            return sort(leftArray, rightArray);
+        } else {
+            return array.sort(compareNumeric);
+        }
+    }
+</script>
+</body>
+</html>
